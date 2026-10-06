@@ -1,0 +1,18 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Wave Link 3</title><style>
+body{font-family:Arial,sans-serif;background:#252525;color:#eee;margin:0;padding:14px;font-size:13px}label{display:block;margin:10px 0 5px;color:#bbb}select,input{width:100%;box-sizing:border-box;background:#333;color:#fff;border:1px solid #555;border-radius:5px;padding:7px} .hint{color:#888;font-size:11px;margin-top:12px;line-height:1.4}.row{margin-bottom:10px}.hidden{display:none}
+</style></head><body>
+<div class="row"><label>Tipo de alvo</label><select id="type"><option value="channel">Canal / fonte</option><option value="channelSend">Canal em um mix</option><option value="mix">Mix / saída do mix</option><option value="input">Entrada física</option><option value="output">Saída física</option></select></div>
+<div class="row"><label>Alvo</label><select id="target"></select></div>
+<div class="row" id="mixrow"><label>Mix</label><select id="mix"></select></div>
+<div class="row"><label>Ícone</label><select id="icon"><option value="mic">Microfone</option><option value="speaker">Sistema / alto-falante</option><option value="headphones">Fones</option><option value="chat">Chat</option><option value="obs">OBS</option><option value="echo">Echo</option></select></div>
+<div class="row"><label>Nome opcional no botão</label><input id="label" placeholder="Ex.: MIC STREAM"></div>
+<div class="hint">Este botão pode mutar/desmutar canais, mixes, entradas físicas ou saídas físicas. O ícone acompanha o estado atual do Wave Link.</div>
+<script>
+let socket,context,catalog={channels:[],mixes:[],inputs:[],outputs:[]},settings={};
+const $=id=>document.getElementById(id);const send=(payload)=>socket&&socket.send(JSON.stringify({event:'sendToPlugin',context,payload}));
+function connectElgatoStreamDeckSocket(port,uuid,event,c){context=c;socket=new WebSocket('ws://127.0.0.1:'+port);socket.onopen=()=>send({request:'catalog'});socket.onmessage=e=>{try{const m=JSON.parse(e.data);if(m.event==='sendToPropertyInspector'&&m.payload?.type==='catalog'){catalog=m.payload.catalog;render();}}catch{}};}
+function listFor(type){return type==='channel'?catalog.channels:type==='channelSend'?catalog.channels:type==='mix'?catalog.mixes:type==='input'?catalog.inputs:catalog.outputs}
+function render(){const type=$('type').value;const arr=listFor(type);$('target').innerHTML=arr.map(x=>`<option value="${x.id}">${x.name}</option>`).join('');$('mixrow').style.display=type==='channelSend'?'block':'none';$('mix').innerHTML=catalog.mixes.map(x=>`<option value="${x.id}">${x.name}</option>`).join('');if(settings.targetId)$('target').value=settings.targetId;if(settings.mixId)$('mix').value=settings.mixId;if(settings.icon)$('icon').value=settings.icon;if(settings.label)$('label').value=settings.label;}
+function save(){settings={targetType:$('type').value,targetId:$('target').value,mixId:$('mix').value,icon:$('icon').value,label:$('label').value};send({settings});}
+$('type').onchange=()=>{render();save()};$('target').onchange=save;$('mix').onchange=save;$('icon').onchange=save;$('label').oninput=save;
+</script></body></html>

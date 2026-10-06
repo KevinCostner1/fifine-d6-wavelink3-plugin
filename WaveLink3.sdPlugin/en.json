@@ -1,0 +1,28 @@
+{
+  "Name": "Wave Link 3 Universal",
+  "Description": "Control Elgato Wave Link 3 from the FIFINE D6.",
+  "com.costner.wavelink3.mute": {
+    "Name": "Mute / Unmute",
+    "Tooltip": "Mute or unmute the selected target."
+  },
+  "com.costner.wavelink3.volumeup": {
+    "Name": "Volume +",
+    "Tooltip": "Increase volume; hold to repeat."
+  },
+  "com.costner.wavelink3.volumedown": {
+    "Name": "Volume -",
+    "Tooltip": "Decrease volume; hold to repeat."
+  },
+  "com.costner.wavelink3.inputstatus": {
+    "Name": "Input",
+    "Tooltip": "Show volume and mute/unmute the selected input."
+  },
+  "com.costner.wavelink3.outputstatus": {
+    "Name": "Output",
+    "Tooltip": "Show volume and mute/unmute the selected output/mix channel."
+  },
+  "com.costner.wavelink3.auxstatus": {
+    "Name": "AUX / Mix",
+    "Tooltip": "Mute/unmute the selected AUX/mix target."
+  }
+}

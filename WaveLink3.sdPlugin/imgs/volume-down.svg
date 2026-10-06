@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144">
+<rect x="3" y="3" width="138" height="138" rx="20" fill="#10161f" stroke="#334052" stroke-width="4"/>
+<!-- speaker -->
+<path d="M27 61h15l22-18v58L42 83H27z" fill="#b68cff"/>
+<path d="M72 57c7 7 7 23 0 30" fill="none" stroke="#b68cff" stroke-width="7" stroke-linecap="round"/>
+<path d="M82 48c13 12 13 36 0 48" fill="none" stroke="#9c82e9" stroke-width="6" stroke-linecap="round"/>
+<!-- falling volume meter -->
+<rect x="99" y="51" width="7" height="48" rx="3.5" fill="#ff6680"/>
+<rect x="111" y="66" width="7" height="33" rx="3.5" fill="#ff6680"/>
+<rect x="123" y="79" width="7" height="20" rx="3.5" fill="#ff6680"/>
+<!-- down arrow -->
+<path d="M112 103v13M112 116l-7-7M112 116l7-7" fill="none" stroke="#ff6680" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

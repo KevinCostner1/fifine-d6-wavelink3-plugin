@@ -1,0 +1,28 @@
+{
+  "Name": "Wave Link 3 Universal",
+  "Description": "透過 FIFINE D6 控制 Elgato Wave Link 3。",
+  "com.costner.wavelink3.mute": {
+    "Name": "靜音 / 取消靜音",
+    "Tooltip": "切換所選目標的靜音狀態。"
+  },
+  "com.costner.wavelink3.volumeup": {
+    "Name": "音量 +",
+    "Tooltip": "增加音量；長按連續調整。"
+  },
+  "com.costner.wavelink3.volumedown": {
+    "Name": "音量 -",
+    "Tooltip": "降低音量；長按連續調整。"
+  },
+  "com.costner.wavelink3.inputstatus": {
+    "Name": "輸入",
+    "Tooltip": "顯示音量並切換所選輸入的靜音狀態。"
+  },
+  "com.costner.wavelink3.outputstatus": {
+    "Name": "輸出",
+    "Tooltip": "顯示音量並切換所選輸出/混音聲道的靜音狀態。"
+  },
+  "com.costner.wavelink3.auxstatus": {
+    "Name": "AUX / 混音",
+    "Tooltip": "切換所選 AUX/混音目標的靜音狀態。"
+  }
+}

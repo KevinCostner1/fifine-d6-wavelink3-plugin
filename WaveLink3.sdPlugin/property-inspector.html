@@ -1,0 +1,49 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Wave Link 3</title><style>
+body{font-family:Arial,sans-serif;background:#252525;color:#eee;margin:0;padding:14px;font-size:13px}label{display:block;margin:10px 0 5px;color:#bbb}select,input{width:100%;box-sizing:border-box;background:#333;color:#fff;border:1px solid #555;border-radius:5px;padding:7px}.hint{color:#888;font-size:11px;margin-top:12px;line-height:1.4}.row{margin-bottom:10px}.status{font-size:11px;margin:4px 0 10px;color:#8fd18f}.empty{color:#ff9a9a;font-size:11px;margin-top:5px}
+.credit{margin-top:18px;padding-top:10px;border-top:1px solid #444;color:#777;font-size:10px;text-align:center}.credit a{color:#9cc7ff;text-decoration:none}.credit a:hover{text-decoration:underline}</style></head><body>
+<div id="status" class="status">Conectando ao Wave Link…</div>
+<div class="row"><label id="typeLabel">Tipo de alvo</label><select id="type"><option value="channel">Entrada / canal (fonte)</option><option value="channelSend">Canal em um mix</option><option value="mix">Mix / saída do mix</option><option value="input">Entrada física</option><option value="output">Saída física</option></select></div>
+<div class="row"><label id="targetLabel">Alvo</label><select id="target"></select><div id="empty" class="empty"></div></div>
+<div class="row" id="mixrow"><label id="mixLabel">Mix</label><select id="mix"></select></div>
+<div class="hint" id="hint">Volume +/− e Mute usam o alvo selecionado. Segure Volume +/− para repetir o ajuste.</div>
+<div class="credit">Wave Link 3 Universal · v1.0.0<br><span id="developed">Desenvolvido por</span> <strong>Costner</strong> · <a href="https://twitch.tv/costnergg" target="_blank">twitch.tv/costnergg</a></div>
+<script>
+let socket=null,context='',catalog={channels:[],mixes:[],inputs:[],outputs:[]},settings={};
+const $=id=>document.getElementById(id);
+const I18N={
+ 'pt-BR':{status:'Conectando ao Wave Link…',connected:'Wave Link conectado',closed:'Conexão encerrada',type:'Tipo de alvo',target:'Alvo',mix:'Mix',hint:'Volume +/− e Mute usam o alvo selecionado. Segure Volume +/− para repetir o ajuste.',developed:'Desenvolvido por',auto:'Auto',pt:'Português (Brasil)',en:'English',es:'Español',types:{channel:'Entrada / canal (fonte)',channelSend:'Canal em um mix',mix:'Mix / saída do mix',input:'Entrada física',output:'Saída física'},physicalInput:'Nenhuma entrada física foi exposta pela API do Wave Link. Use Entrada / canal (fonte).',physicalOutput:'Nenhuma saída física foi exposta pela API do Wave Link.',waiting:'Aguardando catálogo do Wave Link…'},
+ en:{status:'Connecting to Wave Link…',connected:'Wave Link connected',closed:'Connection closed',type:'Target type',target:'Target',mix:'Mix',hint:'Volume +/− and Mute use the selected target. Hold Volume +/− to repeat the adjustment.',developed:'Developed by',auto:'Auto',pt:'Português (Brasil)',en:'English',es:'Español',types:{channel:'Input / channel (source)',channelSend:'Channel in a mix',mix:'Mix / mix output',input:'Physical input',output:'Physical output'},physicalInput:'No physical input was exposed by the Wave Link API. Use Input / channel (source).',physicalOutput:'No physical output was exposed by the Wave Link API.',waiting:'Waiting for Wave Link catalog…'},
+ es:{status:'Conectando a Wave Link…',connected:'Wave Link conectado',closed:'Conexión cerrada',type:'Tipo de objetivo',target:'Objetivo',mix:'Mezcla',hint:'Volumen +/− y Mute usan el objetivo seleccionado. Mantén pulsado Volumen +/− para repetir el ajuste.',developed:'Desarrollado por',auto:'Auto',pt:'Português (Brasil)',en:'English',es:'Español',types:{channel:'Entrada / canal (fuente)',channelSend:'Canal en una mezcla',mix:'Mezcla / salida de mezcla',input:'Entrada física',output:'Salida física'},physicalInput:'La API de Wave Link no expuso ninguna entrada física. Usa Entrada / canal (fuente).',physicalOutput:'La API de Wave Link no expuso ninguna salida física.',waiting:'Esperando el catálogo de Wave Link…'},
+ zh_CN:{status:'正在连接 Wave Link…',connected:'Wave Link 已连接',closed:'连接已关闭',type:'目标类型',target:'目标',mix:'混音',hint:'音量 +/− 和静音使用所选目标。长按音量按钮可连续调节。',developed:'开发者',auto:'自动',pt:'葡萄牙语（巴西）',en:'英语',es:'西班牙语',types:{channel:'输入 / 声道（源）',channelSend:'混音中的声道',mix:'混音 / 混音输出',input:'物理输入',output:'物理输出'},physicalInput:'Wave Link API 未提供物理输入。请使用“输入 / 声道（源）”。',physicalOutput:'Wave Link API 未提供物理输出。',waiting:'正在等待 Wave Link 目录…'},
+ zh_TW:{status:'正在連線 Wave Link…',connected:'Wave Link 已連線',closed:'連線已關閉',type:'目標類型',target:'目標',mix:'混音',hint:'音量 +/− 和靜音使用所選目標。長按音量按鈕可連續調整。',developed:'開發者',auto:'自動',pt:'葡萄牙語（巴西）',en:'英文',es:'西班牙語',types:{channel:'輸入 / 聲道（來源）',channelSend:'混音中的聲道',mix:'混音 / 混音輸出',input:'實體輸入',output:'實體輸出'},physicalInput:'Wave Link API 未提供實體輸入。請使用「輸入 / 聲道（來源）」。',physicalOutput:'Wave Link API 未提供實體輸出。',waiting:'正在等待 Wave Link 目錄…'}
+};
+let applicationLanguage='en';
+function normalizeLang(v){const n=String(v||'').replace('-','_').toLowerCase();if(n==='pt_br'||n==='pt')return 'pt-BR';if(n==='zh_cn'||n==='zh')return 'zh_CN';if(n==='zh_tw')return 'zh_TW';if(n.startsWith('es'))return 'es';if(n.startsWith('de'))return 'de';if(n.startsWith('fr'))return 'fr';if(n.startsWith('ja'))return 'ja';if(n.startsWith('ko'))return 'ko';return 'en';}
+function detectLang(){return applicationLanguage;} 
+let lang='en';
+function t(){return I18N[lang]||I18N.en;}
+function applyLanguage(){const x=t();$('typeLabel').textContent=x.type;$('targetLabel').textContent=x.target;$('mixLabel').textContent=x.mix;$('hint').textContent=x.hint;$('developed').textContent=x.developed;$('status').textContent=x.status;
+ const opts=$('type').options;for(const o of opts)o.textContent=x.types[o.value];
+ render();
+}
+function send(payload){if(socket&&socket.readyState===1)socket.send(JSON.stringify({event:'sendToPlugin',context,payload}));}
+function setSettings(value){if(socket&&socket.readyState===1&&context)socket.send(JSON.stringify({event:'setSettings',context,payload:value}));}
+function connectElgatoStreamDeckSocket(port,uuid,event,applicationInfo,actionInfo){
+ try{
+  const app=typeof applicationInfo==='string'?JSON.parse(applicationInfo):applicationInfo;
+  applicationLanguage=normalizeLang(app?.application?.language||app?.language);
+  const ai=typeof actionInfo==='string'?JSON.parse(actionInfo):actionInfo;
+  context=ai?.context||ai?.payload?.context||'';
+  settings=ai?.payload?.settings||ai?.settings||{};
+ }catch(err){console.error('Registration info:',err);}
+ lang=detectLang();applyLanguage();
+ socket=new WebSocket('ws://127.0.0.1:'+port);
+ socket.onopen=()=>{socket.send(JSON.stringify({event,uuid}));if(context)socket.send(JSON.stringify({event:'getSettings',context}));send({request:'catalog'});};
+ socket.onmessage=e=>{try{const m=JSON.parse(e.data);if(m.event==='didReceiveSettings'){settings=Object.assign({},m.payload?.settings||{});if(settings._catalog)catalog=settings._catalog;lang=detectLang();applyLanguage();$('status').textContent=t().connected;}else if(m.event==='sendToPropertyInspector'&&m.payload?.type==='catalog'){catalog=m.payload.catalog||catalog;settings=Object.assign({},settings,m.payload.settings||{});render();}}catch(err){console.error(err)}};
+ socket.onclose=()=>{$('status').textContent=t().closed;};
+}
+function listFor(type){return type==='channel'||type==='channelSend'?catalog.channels:type==='mix'?catalog.mixes:type==='input'?catalog.inputs:catalog.outputs}
+function render(){const x=t();if(settings.targetType && $('type').querySelector(`option[value=\"${settings.targetType}\"]`))$('type').value=settings.targetType;const type=$('type').value,arr=listFor(type)||[];$('target').innerHTML=arr.map(v=>`<option value="${v.id}">${v.name||v.id}</option>`).join('');$('mixrow').style.display=type==='channelSend'?'block':'none';$('mix').innerHTML=(catalog.mixes||[]).map(v=>`<option value="${v.id}">${v.name||v.id}</option>`).join('');if(settings.targetId && arr.some(v=>v.id===settings.targetId))$('target').value=settings.targetId;if(settings.mixId && (catalog.mixes||[]).some(v=>v.id===settings.mixId))$('mix').value=settings.mixId;$('empty').textContent=arr.length?'':(type==='input'?x.physicalInput:type==='output'?x.physicalOutput:x.waiting);}
+function save(){const next={...settings,targetType:$('type').value};if($('target').value)next.targetId=$('target').value;if($('mix').value)next.mixId=$('mix').value;settings=next;setSettings(settings);}
+$('type').onchange=()=>{const newType=$('type').value;settings={...settings,targetType:newType,targetId:''};setSettings(settings);render();};$('target').onchange=save;$('mix').onchange=save;lang=detectLang();applyLanguage();
+</script></body></html>

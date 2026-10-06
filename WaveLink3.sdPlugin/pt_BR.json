@@ -1,0 +1,28 @@
+{
+  "Name": "Wave Link 3 Universal",
+  "Description": "Controle o Elgato Wave Link 3 pelo FIFINE D6.",
+  "com.costner.wavelink3.mute": {
+    "Name": "Mute / Desmute",
+    "Tooltip": "Silenciar ou ativar o alvo selecionado."
+  },
+  "com.costner.wavelink3.volumeup": {
+    "Name": "Aumentar volume",
+    "Tooltip": "Aumentar volume; segure para repetir."
+  },
+  "com.costner.wavelink3.volumedown": {
+    "Name": "Diminuir volume",
+    "Tooltip": "Diminuir volume; segure para repetir."
+  },
+  "com.costner.wavelink3.inputstatus": {
+    "Name": "Entrada",
+    "Tooltip": "Mostrar volume e silenciar/ativar a entrada selecionada."
+  },
+  "com.costner.wavelink3.outputstatus": {
+    "Name": "Saída",
+    "Tooltip": "Mostrar volume e silenciar/ativar o canal ou mix selecionado."
+  },
+  "com.costner.wavelink3.auxstatus": {
+    "Name": "AUX / Mix",
+    "Tooltip": "Silenciar/ativar o alvo AUX/mix selecionado."
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "SDKVersion": 2,
+  "Author": "Costner",
+  "Name": "Wave Link 3 Universal",
+  "Description": "Controle universal do Elgato Wave Link 3 pelo FIFINE D6. Desenvolvido por Costner.",
+  "Icon": "imgs/plugin",
+  "Version": "1.0.0",
+  "CodePathWin": "plugin/launch.exe",
+  "Category": "Wave Link 3 Universal",
+  "CategoryIcon": "imgs/plugin",
+  "Software": {
+    "MinimumVersion": "2.9"
+  },
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Actions": [
+    {
+      "UUID": "com.costner.wavelink3.mute",
+      "Name": "Mute / Unmute",
+      "Tooltip": "Mute / Unmute do alvo selecionado; mostra o volume em %",
+      "Icon": "imgs/mute",
+      "Controllers": [
+        "Keypad"
+      ],
+      "PropertyInspectorPath": "property-inspector.html",
+      "States": [
+        {
+          "Image": "imgs/mic-live",
+          "TitleAlignment": "bottom",
+          "FontSize": "9",
+          "ShowTitle": true
+        }
+      ]
+    },
+    {
+      "UUID": "com.costner.wavelink3.volumeup",
+      "Name": "Volume +",
+      "Tooltip": "Escolha o alvo e segure para aumentar",
+      "Icon": "imgs/volume-up",
+      "Controllers": [
+        "Keypad"
+      ],
+      "PropertyInspectorPath": "property-inspector.html",
+      "States": [
+        {
+          "Image": "imgs/volume-up",
+          "TitleAlignment": "bottom",
+          "FontSize": "9",
+          "ShowTitle": true
+        }
+      ]
+    },
+    {
+      "UUID": "com.costner.wavelink3.volumedown",
+      "Name": "Volume −",
+      "Tooltip": "Escolha o alvo e segure para diminuir",
+      "Icon": "imgs/volume-down",
+      "Controllers": [
+        "Keypad"
+      ],
+      "PropertyInspectorPath": "property-inspector.html",
+      "States": [
+        {
+          "Image": "imgs/volume-down",
+          "TitleAlignment": "bottom",
+          "FontSize": "9",
+          "ShowTitle": true
+        }
+      ]
+    },
+    {
+      "UUID": "com.costner.wavelink3.inputstatus",
+      "Name": "Input / Entrada",
+      "Tooltip": "Entrada: mostra volume e permite mutar/desmutar o alvo selecionado",
+      "Icon": "imgs/input-active",
+      "Controllers": [
+        "Keypad"
+      ],
+      "PropertyInspectorPath": "property-inspector.html",
+      "States": [
+        {
+          "Image": "imgs/input-active",
+          "TitleAlignment": "bottom",
+          "FontSize": "10",
+          "ShowTitle": true
+        },
+        {
+          "Image": "imgs/input-muted",
+          "TitleAlignment": "bottom",
+          "FontSize": "10",
+          "ShowTitle": true
+        }
+      ]
+    },
+    {
+      "UUID": "com.costner.wavelink3.outputstatus",
+      "Name": "Output / Saída",
+      "Tooltip": "Saída: escolha um canal, mix ou saída e mute/desmute com um toque",
+      "Icon": "imgs/output-active",
+      "Controllers": [
+        "Keypad"
+      ],
+      "PropertyInspectorPath": "property-inspector.html",
+      "States": [
+        {
+          "Image": "imgs/output-active",
+          "TitleAlignment": "bottom",
+          "FontSize": "10",
+          "ShowTitle": true
+        },
+        {
+          "Image": "imgs/output-muted",
+          "TitleAlignment": "bottom",
+          "FontSize": "10",
+          "ShowTitle": true
+        }
+      ]
+    },
+    {
+      "UUID": "com.costner.wavelink3.auxstatus",
+      "Name": "AUX / Mix",
+      "Tooltip": "AUX/Mix: escolha um alvo e mute/desmute com um toque",
+      "Icon": "imgs/aux-active",
+      "Controllers": [
+        "Keypad"
+      ],
+      "PropertyInspectorPath": "property-inspector.html",
+      "States": [
+        {
+          "Image": "imgs/aux-active",
+          "TitleAlignment": "bottom",
+          "FontSize": "10",
+          "ShowTitle": true
+        },
+        {
+          "Image": "imgs/aux-muted",
+          "TitleAlignment": "bottom",
+          "FontSize": "10",
+          "ShowTitle": true
+        }
+      ]
+    }
+  ]
+}
