@@ -2,7 +2,7 @@ Wave Link 3 Universal - v1.0.0
 
 Plugin comunitário para FIFINE Control Deck / AmpliGame D6 que integra o Elgato Wave Link 3.
 
-Desenvolvido por Costner
+Desenvolvido por Kevin Costner
 Twitch: https://twitch.tv/costnergg
 
 RECURSOS
@@ -35,7 +35,7 @@ Este é um projeto comunitário e independente da FIFINE e da Elgato.
 
 CRÉDITOS
 Wave Link 3 Universal v1.0.0
-Desenvolvido por Costner
+Desenvolvido por Kevin Costner
 https://twitch.tv/costnergg
 
 
